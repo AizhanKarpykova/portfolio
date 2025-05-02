@@ -25,9 +25,3 @@ $body .= "Message:\r\n$message\r\n";
 $headers = "From: $from\r\nReply-To: $from";
 $sent = mail($to, $subject, $body, $headers);
 
-// RESPOND:
-if ($sent) {
-    echo json_encode(['status'=>'success']);
-} else {
-    echo json_encode(['status'=>'error']);
-}

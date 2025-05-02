@@ -109,32 +109,57 @@ $(document).ready(function () {
     // Contact Form 	
 
     // validate contact form
-// validate contact form
-$(function(){
-    $('#contact-form').on('submit', function(e){
-      e.preventDefault();
-      var $form = $(this);
+    $(function () {
+        $('#contact-form').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2
+                },
+                email: {
+                    required: true
+                },
+                phone: {
+                    required: false
+                },
+                message: {
+                    required: true
+                }
 
-      // clear any previous messages
-      $('#success, #error').hide();
+            },
+            messages: {
+                name: {
+                    required: "This field is required",
+                    minlength: "your name must consist of at least 2 characters"
+                },
+                email: {
+                    required: "This field is required"
+                },
+                message: {
+                    required: "This field is required"
+                }
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    type: "POST",
+                    data: $(form).serialize(),
+                    url: "process.php",
+                    success: function () {
+                        $('#contact :input').attr('disabled', 'disabled');
+                        $('#contact').fadeTo("slow", 1, function () {
+                            $(this).find(':input').attr('disabled', 'disabled');
+                            $(this).find('label').css('cursor', 'default');
+                            $('#success').fadeIn();
+                        });
+                    },
+                    error: function () {
+                        $('#contact').fadeTo("slow", 1, function () {
+                            $('#error').fadeIn();
+                        });
+                    }
+                });
+            }
+        });
 
-      $.ajax({
-        url: $form.attr('action'),
-        type: $form.attr('method'),
-        data: $form.serialize(),
-        dataType: 'json'
-      })
-      .done(function(resp){
-        if (resp.status === 'success') {
-          $form.find('input,textarea,button').prop('disabled', true);
-          $('#success').fadeIn();
-        } else {
-          $('#error').fadeIn();
-        }
-      })
-      .fail(function(){
-        $('#error').fadeIn();
-      });
     });
-  });
 });
