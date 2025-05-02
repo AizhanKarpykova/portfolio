@@ -103,10 +103,4 @@ $(document).ready(function () {
 
     });
 
-    //animatedModal
-
-
-    // Contact Form 	
-
-    // validate contact form
 });
